@@ -14,7 +14,7 @@ app.use(
   })
 );
 
-app.get("/_status", (req, res) => {
+app.get("/_status", (_req, res) => {
   res.send("OK");
 });
 

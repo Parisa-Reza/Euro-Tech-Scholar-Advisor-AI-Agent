@@ -1,9 +1,9 @@
 import express, { type Request, type Response } from "express";
 
-import { ChatMessage, genAI } from "@/llm/index.js";
-import { SYSTEM_PROMPT } from "@/prompts/index.js";
+import { ChatMessage, genAI } from "../llm/index.js";
+import { SYSTEM_PROMPT } from "../prompts/index.js";
 
-import { searchRequirementsTool } from "@/tools/index.js";
+import { searchRequirementsTool } from "../tools/index.js";
 
 const router = express.Router();
 
