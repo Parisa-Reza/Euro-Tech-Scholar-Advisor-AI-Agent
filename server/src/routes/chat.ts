@@ -1,15 +1,16 @@
 import express, { type Request, type Response } from "express";
 
-import { ChatMessage, genAI } from "@/llm";
-import { SYSTEM_PROMPT } from "@/prompts";
-import { searchProductsTool } from "@/tools";
+import { ChatMessage, genAI } from "@/llm/index.js";
+import { SYSTEM_PROMPT } from "@/prompts/index.js";
+
+import { searchRequirementsTool } from "@/tools/index.js";
 
 const router = express.Router();
 
 const chatHistory: ChatMessage[] = [];
 
 const toolMap = {
-  search_products: searchProductsTool.execute,
+  search_requirements: searchRequirementsTool.execute,
 };
 
 router.post("/chat", async (req: Request, res: Response) => {
@@ -22,13 +23,13 @@ router.post("/chat", async (req: Request, res: Response) => {
   }
 
   const chat = genAI.chats.create({
-    model: "gemini-2.5-flash",
+    model: "gemini-2.5-flash-lite",
     history: chatHistory,
     config: {
       systemInstruction: SYSTEM_PROMPT,
       tools: [
         {
-          functionDeclarations: [searchProductsTool.definition],
+          functionDeclarations: [searchRequirementsTool.definition],
         },
       ],
     },
@@ -52,7 +53,7 @@ router.post("/chat", async (req: Request, res: Response) => {
 
     console.log(
       "=====>>> Response candidates:",
-      JSON.stringify(response.candidates, null, 2)
+      JSON.stringify(response.candidates, null, 2),
     );
 
     if (response.functionCalls && response.functionCalls.length > 0) {
@@ -72,7 +73,7 @@ router.post("/chat", async (req: Request, res: Response) => {
 
       currentMessage = `
       Here is the response of the ${toolName} tool: ${JSON.stringify(
-        toolResult
+        toolResult,
       )}
       `;
       continue;
@@ -98,3 +99,4 @@ router.post("/chat", async (req: Request, res: Response) => {
 });
 
 export default router;
+

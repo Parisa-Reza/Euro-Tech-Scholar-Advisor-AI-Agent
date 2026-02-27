@@ -1,9 +1,9 @@
 import cors from "cors";
 import express from "express";
 
-import appConfig from "./config";
+import appConfig from "./config.js";
 
-import chatRouter from "./routes/chat";
+import chatRouter from "./routes/chat.js";
 
 const app = express();
 
